@@ -92,8 +92,8 @@ public class StationListener extends Thread {
 		if (!collision){
 			process(lastPacket);
 		}
-		long newTime = Math.round(timestampAcc / (double) timestampCount);
-		return newTime;
+		Double newTime = timestampAcc / (double) timestampCount;
+		return newTime.longValue();
 //		}
 //		else 
 //			return Station.offset;
