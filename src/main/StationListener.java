@@ -102,8 +102,12 @@ public class StationListener extends Thread {
 	
 	public void startFrame() {
 		lastPacket = null;
-		timestampCount = 1;
-		timestampAcc = Station.offset;
+//		timestampCount = 1;
+		timestampCount = 0;
+
+//		timestampAcc = Station.offset;
+		timestampAcc = 0;
+
 		frameStart = Station.getTime();
 		lastSlot = 0;
 		usedSlotSet.clear();

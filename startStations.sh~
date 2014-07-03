@@ -51,7 +51,7 @@ dataSource="java -cp . datasource.DataSource"
 #
 # Example: stationCmd="java aufgabe4.MyStation $interfaceName $mcastAddress $receivePort $stationClass"
 ########################################################################################################
-stationCmd="java -jar station.jar $interfaceName $mcastAddress $receivePort $stationClass $UTCoffsetMs"
+stationCmd="java main.Station $interfaceName $mcastAddress $receivePort $stationClass $UTCoffsetMs"
 
 
 printUsage() {
@@ -67,12 +67,19 @@ then
 	then
 		if [ $firstIndex == ${firstIndex//[^0-9]/} -a $lastIndex == ${lastIndex//[^0-9]/} ] 
 		then
+			if [ ! -d "main" ]
+			then
+				mkdir main
+			fi
+			rm main/*
+			cp bin/main/* main/
 		
 			if [ $firstIndex -le $lastIndex ]
 			then
 				for i in `seq $firstIndex $lastIndex`
 				do
 					# Launching data source and station.
+					
 					$dataSource $teamNo $i | $stationCmd &
 					#
 					# If your are annoyed by all the output, try this instead:

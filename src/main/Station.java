@@ -37,7 +37,6 @@ public class Station {
 		      while (i.hasNext())
 		  		slotSet.remove(i.next());
 		  }
-		slotSet.removeAll(listener.usedSlotSet);
 		int nextSlot = 1 + (int) (Math.random() * ((slotSet.size()  - 1) + 1));
 		if (slotSet.toArray().length > 0)
 			return (byte) slotSet.toArray()[nextSlot-1];
@@ -53,27 +52,31 @@ public class Station {
 		listener.start();
 		listener.startFrame();
 		Thread.sleep(FRAME_LENGTH - (getTime() % FRAME_LENGTH));
+		listener.startFrame();
 		Thread.sleep(FRAME_LENGTH);
 		byte slot = getNextSlot();
 		while(true) {
+			long timeTillEndOfFrame = FRAME_LENGTH - (System.currentTimeMillis() % FRAME_LENGTH);
+			if (timeTillEndOfFrame > 0) {
+				Thread.sleep(timeTillEndOfFrame);
+			}
+			offset += listener.getNewOffset();
+
 			listener.startFrame();
-			dataSink.logInfoMassage("New Frame at: " + offset);
+//			dataSink.logInfoMassage("New Frame at: " + offset);
 			long sendTime = SLOT_LENGTH * slot - SLOT_OFFSET;
 //			Thread.sleep(sendTime);
 //			offset += listener.getNewOffset();
 //			slot = getNextSlot();
 //			sender.sendPacket(slot);
-			offset = listener.getNewOffset();
 //			if (sendTime > offset) {
 				Thread.sleep(Math.max((sendTime + offset) % FRAME_LENGTH, 0));
 				slot = getNextSlot();
 				if (slot > 0)
+//					offset += listener.getNewOffset();
 					sender.sendPacket(slot);
 //				}
-			long timeTillEndOfFrame = FRAME_LENGTH - (System.currentTimeMillis() % FRAME_LENGTH);
-			if (timeTillEndOfFrame > 0) {
-				Thread.sleep(timeTillEndOfFrame);
-			}			
+			
 		}
 	}
 	

@@ -51,7 +51,7 @@ dataSource="java -cp . datasource.DataSource"
 #
 # Example: stationCmd="java aufgabe4.MyStation $interfaceName $mcastAddress $receivePort $stationClass"
 ########################################################################################################
-stationCmd="java main.Station $interfaceName $mcastAddress $receivePort $stationClass $UTCoffsetMs"
+stationCmd="java -jar station.jar $interfaceName $mcastAddress $receivePort $stationClass $UTCoffsetMs"
 
 
 printUsage() {
